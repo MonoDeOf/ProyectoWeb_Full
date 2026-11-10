@@ -1,0 +1,29 @@
+# INFRAGANTI MARKETPLACE · Docker Compose (Docker Desktop)
+# Uso, desde la raíz del proyecto:
+#   1) Copiar .env.example como .env (y cambiar la contraseña si se desea)
+#   2) docker compose up -d
+# Servicios: PostgreSQL (5432).
+# La primera vez se ejecutan sql/01_esquema.sql y sql/02_datos_prueba.sql.
+services:
+  postgres:
+    image: postgres:16
+    container_name: infraganti-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres_infraganti:/var/lib/postgresql/data
+      - ./sql/01_esquema.sql:/docker-entrypoint-initdb.d/01_esquema.sql:ro
+      - ./sql/02_datos_prueba.sql:/docker-entrypoint-initdb.d/02_datos_prueba.sql:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_infraganti:

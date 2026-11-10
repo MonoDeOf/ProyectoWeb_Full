@@ -18,13 +18,16 @@ dist-ssr
 .idea
 .DS_Store
 *.suo
-*.ntvs*
+.ntvs
 *.njsproj
 *.sln
 *.sw?
 
-# Python (FastAPI)
-__pycache__
+# Variables de entorno
+.env
+api/.env
+
+# Python
+_pycache_
 *.pyc
 .venv
-venv
