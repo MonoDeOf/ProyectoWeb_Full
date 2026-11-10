@@ -4,105 +4,148 @@ Plataforma web de compra y venta de productos entre estudiantes de la comunidad 
 
 El proyecto se compone de un **frontend en React** y **dos APIs REST en FastAPI** (una de productos y otra de usuarios/autenticación).
 
----
-
 ## Integrantes
 
-| Nombre |
-|---|
-| Benjamin Farias |
-| Benjamin Villarroel |
-| Omar Millar |
-| Frank Häfelin |
-
----
+| Nombre | 
+| ----- | 
+| Benjamin Farias | 
+| Benjamin Villarroel | 
+| Omar Millar | 
+| Frank Häfelin | 
 
 ## Contenido
 
-1. Descripción de la problemática
-2. Usuarios objetivo
-3. Funcionalidades principales
-4. Tecnologías
-5. Estructura del proyecto
-6. API pública utilizada y documentación oficial
-7. Endpoints utilizados
-8. Justificación funcional de la API
-9. Diseño de la plataforma
+ 1. Descripción de la problemática y Diagnóstico del Taller 2
+
+ 2. Usuarios objetivo e Historias de Usuario
+
+ 3. Funcionalidades principales
+
+ 4. Tecnologías
+
+ 5. Estructura del proyecto, Arquitectura y Navegación
+
+ 6. API pública utilizada y documentación oficial
+
+ 7. Endpoints utilizados
+
+ 8. Justificación funcional de la API y Modelado de Datos (SQL/NoSQL)
+
+ 9. Diseño de la plataforma
+
 10. Flujo de la plataforma
+
 11. Criterio de coherencia
-12. Instalación y ejecución
+
+12. Instalación, ejecución y despliegue con Docker
+
 13. Persistencia de datos
-14. Limitaciones conocidas
-15. Uso de Inteligencia Artificial
-16. Cuentas de prueba
-17. Solución de problemas
-18. Mejoras futuras
 
----
+14. Pruebas
 
-## Descripción de la problemática
+15. Limitaciones conocidas
+
+16. Uso de Inteligencia Artificial
+
+17. Cuentas de prueba
+
+18. Solución de problemas
+
+19. Mejoras futuras
+
+## Descripción de la problemática y Diagnóstico del Taller 2
 
 Dentro de la comunidad universitaria, los estudiantes compran y venden con frecuencia libros, computadores, accesorios, instrumentos y artículos deportivos. Hoy esa actividad ocurre en canales informales (grupos de mensajería, redes sociales y avisos sueltos), donde **no existe una plataforma de confianza** pensada para realizar compras y ventas de artículos entre estudiantes.
 
 Esa falta de una plataforma confiable genera problemas concretos:
 
-- **Desconfianza entre las partes:** no hay una forma clara de saber quién publica, de qué carrera es ni cómo contactarlo, lo que facilita estafas y publicaciones engañosas.
-- **Información dispersa y sin estructura:** cada aviso describe el producto a su manera, sin precio, estado, categoría o lugar de entrega ordenados.
-- **Publicaciones desactualizadas:** artículos ya vendidos siguen apareciendo como disponibles, y los interesados pierden tiempo preguntando por ellos.
-- **Dificultad para encontrar lo que se busca:** sin búsqueda ni filtros, ubicar un producto exige revisar largas conversaciones.
-- **Sin control ni moderación:** nadie puede retirar publicaciones inadecuadas ni evitar el spam.
+* **Desconfianza entre las partes:** no hay una forma clara de saber quién publica, de qué carrera es ni cómo contactarlo, lo que facilita estafas y publicaciones engañosas.
+
+* **Información dispersa y sin estructura:** cada aviso describe el producto a su manera, sin precio, estado, categoría o lugar de entrega ordenados.
+
+* **Publicaciones desactualizadas:** artículos ya vendidos siguen apareciendo como disponibles, y los interesados pierden tiempo preguntando por ellos.
+
+* **Dificultad para encontrar lo que se busca:** sin búsqueda ni filtros, ubicar un producto exige revisar largas conversaciones.
+
+* **Sin control ni moderación:** nadie puede retirar publicaciones inadecuadas ni evitar el spam.
 
 **INFRAGANTI MARKETPLACE** busca responder a este problema ofreciendo un espacio único y ordenado para la comunidad estudiantil, con:
 
-- Publicaciones **estructuradas** (precio, categoría, estado, descripción, vendedor, carrera, contacto y lugar de entrega).
-- **Estado visible** de cada artículo (Disponible o Vendido).
-- **Acceso con sesión** para comprar y publicar, con roles de usuario y administrador.
-- **Moderación** a cargo del administrador, que puede eliminar publicaciones, y una **espera de 30 segundos** entre publicaciones para limitar el spam.
-- **Información verificable de libros** mediante la API pública de Open Library, que ayuda al comprador a confirmar que el título, autor y edición corresponden a lo ofrecido.
+* Publicaciones **estructuradas** (precio, categoría, estado, descripción, vendedor, carrera, contacto y lugar de entrega).
 
-> Este proyecto es un prototipo académico: no verifica la identidad real de los usuarios ni procesa pagos. Ver [Limitaciones conocidas](#limitaciones-conocidas).
+* **Estado visible** de cada artículo (Disponible o Vendido).
 
----
+* **Acceso con sesión** para comprar y publicar, con roles de usuario y administrador.
 
-## Usuarios objetivo
+* **Moderación** a cargo del administrador, que puede eliminar publicaciones, y una **espera de 30 segundos** entre publicaciones para limitar el spam.
 
-| Usuario | Necesidad |
-|---|---|
-| **Estudiantes compradores** | Encontrar artículos de segunda mano a buen precio, con información clara y de una fuente confiable. |
-| **Estudiantes vendedores** | Publicar sus artículos de forma ordenada y mantener actualizado su estado de venta. |
-| **Administradores o moderadores** | Supervisar el catálogo y retirar publicaciones inadecuadas. |
-| **Visitantes** | Explorar el catálogo antes de decidir si crear una sesión y participar. |
+* **Información verificable de libros** mediante la API pública de Open Library, que ayuda al comprador a confirmar que el título, autor y edición corresponden a lo ofrecido.
 
----
+### Diagnóstico del Taller 2 (Continuidad de Etapa 1)
+
+El presente desarrollo evidencia una clara evolución sobre el caso planteado en el Taller 2:
+
+* **Qué se conserva:** El dominio central del problema (marketplace universitario), los tipos de artículos, la necesidad de estructurar publicaciones y los roles base.
+
+* **Qué se modifica:** La arquitectura pasa de un esquema puramente local/estático a una estructura robusta cliente-servidor, migrando a bases de datos reales para asegurar la integridad de la información y la concurrencia.
+
+* **Qué se amplía:** Se incorporan flujos end-to-end completos (carrito, checkout simulado de pedidos), persistencia avanzada mediante Docker (PostgreSQL para modelo relacional y MongoDB para interacciones de preguntas/respuestas), y validaciones exhaustivas de negocio.
+
+
+## Usuarios objetivo e Historias de Usuario
+
+| Usuario | Necesidad | 
+| ----- | ----- | 
+| **Estudiantes compradores** | Encontrar artículos de segunda mano a buen precio, con información clara y de una fuente confiable. | 
+| **Estudiantes vendedores** | Publicar sus artículos de forma ordenada y mantener actualizado su estado de venta. | 
+| **Administradores o moderadores** | Supervisar el catálogo y retirar publicaciones inadecuadas. | 
+| **Visitantes** | Explorar el catálogo antes de decidir si crear una sesión y participar. | 
+
+### Historias de Usuario Principales
+
+1. **Como estudiante comprador**, quiero filtrar los productos por categoría y rango de precio para encontrar rápidamente lo que necesito para mis estudios.
+
+2. **Como estudiante vendedor**, quiero poder cambiar el estado de mi artículo a "Vendido" de forma sencilla para dejar de recibir consultas una vez que cerré el trato.
+
+3. **Como usuario autenticado**, quiero poder dejar preguntas públicas en un producto y recibir respuestas del vendedor, para aclarar dudas antes de agregar el ítem al carrito.
+
+4. **Como administrador**, quiero tener privilegios para eliminar cualquier publicación de la plataforma para mantener el orden y evitar contenido inapropiado o spam.
 
 ## Funcionalidades principales
 
-- Catálogo con portada, productos *Nuevos* y *Populares por categoría*.
-- Búsqueda por texto y filtros por categoría, estado y rango de precio, con orden por precio o nombre.
-- Detalle del producto con recomendaciones de la misma categoría.
-- Inicio y cierre de sesión con tres perfiles: visitante, usuario y administrador.
-- Carrito de compra y favoritos (con sesión iniciada).
-- Publicación de productos con validación de formulario y procesamiento de imagen.
-- Cambio de estado Disponible/Vendido y eliminación de publicaciones (esta última solo para el administrador).
-- Información de libros (autor, primera edición y portada) mediante Open Library.
-- Persistencia de sesión, carrito y favoritos en el navegador.
+* Catálogo con portada, productos *Nuevos* y *Populares por categoría*.
 
----
+* Búsqueda por texto y filtros por categoría, estado y rango de precio, con orden por precio o nombre.
+
+* Detalle del producto con recomendaciones de la misma categoría.
+
+* Inicio y cierre de sesión con tres perfiles: visitante, usuario y administrador.
+
+* Carrito de compra y favoritos (con sesión iniciada).
+
+* Publicación de productos con validación de formulario y procesamiento de imagen.
+
+* Cambio de estado Disponible/Vendido y eliminación de publicaciones (esta última solo para el administrador).
+
+* Información de libros (autor, primera edición y portada) mediante Open Library.
+
+* Persistencia de sesión, carrito y favoritos en el navegador.
 
 ## Tecnologías
 
-| Capa | Tecnología |
-|---|---|
-| Frontend | React, Vite, JavaScript, Bootstrap 5.3.8 (CDN) y CSS por página |
-| Backend de productos | Python, FastAPI, Pydantic (puerto 8000) |
-| Backend de usuarios | Python, FastAPI, Pydantic (puerto 8001) |
-| Servicio externo | API pública de [Open Library](https://openlibrary.org) (información de libros) |
-| Datos | `api/data.json` (productos) y `api/usuarios.json` (cuentas), cargados en memoria |
-| Persistencia en el navegador | `localStorage` (sesión, carrito, favoritos y publicaciones propias) |
+| Capa | Tecnología | 
+| ----- | ----- | 
+| Frontend | React, Vite, JavaScript, Bootstrap 5.3.8 (CDN) y CSS por página | 
+| Backend de productos | Python, FastAPI, Pydantic (puerto 8000) | 
+| Backend de usuarios | Python, FastAPI, Pydantic (puerto 8001) | 
+| Servicio externo | API pública de [Open Library](https://openlibrary.org) (información de libros) | 
+| Base de Datos Relacional | PostgreSQL 16 (Usuarios, Productos, Pedidos, Carrito) | 
+| Base de Datos Documental | MongoDB 8.0 (Preguntas y respuestas) | 
+| Infraestructura | Docker y Docker Compose | 
+| Datos de respaldo base | `api/data.json` y `api/usuarios.json` (cargados en memoria en versión local sin DB) | 
+| Persistencia en el navegador | `localStorage` (sesión, carrito, favoritos y publicaciones propias) | 
 
----
-
-## Estructura del proyecto
+## Estructura del proyecto, Arquitectura y Navegación
 
 ```
 WebReact/
@@ -111,453 +154,303 @@ WebReact/
 │   ├── data.json            # 9 productos iniciales
 │   ├── usuarios.py          # API de usuarios (login) — puerto 8001
 │   └── usuarios.json        # Cuentas de prueba con su rol
+├── mongo/
+│   └── 01_preguntas.js      # Script de inicialización colección NoSQL
+├── sql/
+│   ├── 01_esquema.sql       # DDL y creación de tablas PostgreSQL
+│   ├── 02_datos_prueba.sql  # Datos iniciales para SQL
+│   └── 03_consultas_verificacion.sql
 ├── public/
 │   └── assets/images/       # Logo, portada e imágenes de productos
 ├── src/
 │   ├── App.jsx              # Estado global, sesión, llamadas a las APIs y navegación
 │   ├── main.jsx             # Punto de entrada de React
 │   ├── components/          # 16 componentes reutilizables
-│   ├── pages/               # Inicio, Mercado, Producto, Publicar, Login
-│   ├── services/            # openLibrary.js (consumo de API externa)
-│   ├── js/                  # formato.js (categorías y formato), almacenamiento.js (localStorage)
+│   ├── pages/               # Inicio, Mercado, Producto, Publicar, Login, Pedidos, Perfil
+│   ├── services/            # openLibrary.js y APIs propias
+│   ├── js/                  # formato.js y almacenamiento.js
 │   └── styles/              # Estilos globales y por página
-├── index.html
-├── package.json             # No incluido en el respaldo: ver "Instalación"
-└── vite.config.js           # No incluido en el respaldo: ver "Instalación"
+├── compose.yaml             # Orquestación de contenedores (App, API, Postgres, Mongo)
+├── Dockerfile               # Configuración de imagen de React
+└── package.json             
+
 ```
 
----
+### Diagrama de Arquitectura
+
+La arquitectura del proyecto está estructurada en un modelo Cliente-Servidor orquestado completamente por Docker:
+
+* El **Frontend** (React + Vite) expuesto en el puerto 5173 se comunica vía peticiones HTTP (fetch).
+
+* El **Backend** cuenta con APIs en FastAPI que reciben las peticiones y aplican reglas de negocio.
+
+* La **Persistencia** está dividida (Polyglot Persistence): PostgreSQL en el puerto 5432 maneja transacciones ACID (productos, usuarios, pedidos), mientras que MongoDB en el puerto 27018 maneja de forma documental las interacciones (preguntas).
+
+### Mapa de Navegación
+
+La experiencia de usuario sigue el siguiente flujo principal:
+
+1. `Inicio`: Vista de aterrizaje y destacados.
+
+2. `Mercado`: Exploración total con filtros combinados.
+
+3. `Detalle de Producto`: Vista de información completa, conexión a Open Library y módulo de preguntas (Mongo).
+
+4. (Requiere Login) `Carrito` -> `Pedidos` (Checkout y cambio de estados).
+
+5. (Requiere Login) `Perfil` -> `Publicar Producto` o gestionar artículos propios.
 
 ## API pública utilizada y documentación oficial
 
 El proyecto consume la API pública de **Open Library**, un servicio gratuito del Internet Archive con información bibliográfica de millones de libros. No requiere clave de acceso (API key) y se consulta directamente desde el frontend con `fetch`.
 
-| Recurso | Dirección |
-|---|---|
-| Sitio oficial | https://openlibrary.org |
-| Documentación general de la API | https://openlibrary.org/developers/api |
-| Documentación de la API de búsqueda | https://openlibrary.org/dev/docs/api/search |
-| Documentación de la API de portadas | https://openlibrary.org/dev/docs/api/covers |
+| Recurso | Dirección | 
+| ----- | ----- | 
+| Sitio oficial | https://openlibrary.org | 
+| Documentación general de la API | https://openlibrary.org/developers/api | 
+| Documentación de la API de búsqueda | https://openlibrary.org/dev/docs/api/search | 
+| Documentación de la API de portadas | https://openlibrary.org/dev/docs/api/covers | 
 
 Además, el proyecto expone sus **propias APIs** con FastAPI (productos y usuarios), descritas en [Criterio de coherencia](#criterio-de-coherencia-cambios-e-incrementos-realizados).
-
----
 
 ## Endpoints utilizados
 
 ### Open Library (API pública)
 
-| Método | Endpoint | Parámetros | Uso en el proyecto |
-|---|---|---|---|
-| `GET` | `https://openlibrary.org/search.json` | `title` (título buscado) y `limit=3` | Busca libros por título. Se usan los campos `key`, `title`, `author_name`, `first_publish_year` y `cover_i`. |
-| `GET` | `https://covers.openlibrary.org/b/id/{cover_i}-M.jpg` | `cover_i` obtenido de la búsqueda | Entrega la portada en tamaño mediano. |
+| Método | Endpoint | Parámetros | Uso en el proyecto | 
+| ----- | ----- | ----- | ----- | 
+| `GET` | `https://openlibrary.org/search.json` | `title` (título buscado) y `limit=3` | Busca libros por título. Se usan los campos `key`, `title`, `author_name`, `first_publish_year` y `cover_i`. | 
+| `GET` | `https://covers.openlibrary.org/b/id/{cover_i}-M.jpg` | `cover_i` obtenido de la búsqueda | Entrega la portada en tamaño mediano. | 
 
 Ejemplo de consulta:
 
 ```
 https://openlibrary.org/search.json?title=el%20principito&limit=3
+
 ```
 
-Código relacionado: `src/services/openLibrary.js` (consulta) y `src/components/InfoLibro.jsx` (presentación de resultados).
+## Justificación funcional de la API y Modelado de Datos (SQL/NoSQL)
 
-### APIs propias (FastAPI)
+El problema central del proyecto es la **falta de confianza** al comprar y vender entre estudiantes. La API de Open Library aporta a resolverlo mediante la **verificación de la oferta**, información externa objetiva y menor carga para el vendedor.
 
-| API | Endpoints |
-|---|---|
-| Productos (puerto 8000) | `GET /`, `GET /productos`, `GET /productos/{id}`, `POST /productos`, `PUT /productos/{id}`, `DELETE /productos/{id}` |
-| Usuarios (puerto 8001) | `GET /`, `POST /login` |
+### Tabla de Endpoints y Diseño API REST
 
----
+Los endpoints fueron diseñados bajo principios RESTful, donde los recursos (`/productos`, `/usuarios`, `/pedidos`) están alineados directamente con las entidades del modelo relacional.
 
-## Justificación funcional de la API
+**API de Productos y Transacciones (Puerto 8000)**
 
-El problema central del proyecto es la **falta de confianza** al comprar y vender entre estudiantes. La API de Open Library aporta a resolverlo de la siguiente forma:
+| Método | Endpoint | Descripción | Requiere Sesión |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/` | Verifica que el servicio esté activo. | No |
+| `GET` | `/categorias` | Lista todas las categorías disponibles para el mercado. | No |
+| `GET` | `/productos` | Lista todos los productos disponibles en el catálogo. | No |
+| `GET` | `/productos/{id}` | Obtiene el detalle de un producto específico. | No |
+| `POST` | `/productos` | Crea y publica un nuevo producto en el catálogo. | Sí |
+| `PUT` | `/productos/{id}` | Actualiza un producto, como su estado (disponible/vendido). | Sí |
+| `DELETE`| `/productos/{id}` | Elimina una publicación del sistema. | Sí (Admin/Dueño) |
+| `GET` | `/usuarios/{nick}/carrito` | Obtiene los productos actuales en el carrito del usuario. | Sí |
+| `POST` | `/usuarios/{nick}/carrito` | Agrega un producto (por ID) al carrito del usuario. | Sí |
+| `DELETE`| `/usuarios/{nick}/carrito/{id}` | Elimina un producto específico del carrito. | Sí |
+| `DELETE`| `/usuarios/{nick}/carrito` | Vacía completamente el carrito del usuario. | Sí |
+| `GET` | `/usuarios/{nick}/favoritos` | Lista los IDs de los productos marcados como favoritos. | Sí |
+| `POST` | `/usuarios/{nick}/favoritos` | Agrega un producto a la lista de favoritos. | Sí |
+| `DELETE`| `/usuarios/{nick}/favoritos/{id}` | Quita un producto de la lista de favoritos. | Sí |
+| `GET` | `/usuarios/{nick}/pedidos` | Lista el historial de pedidos del usuario. | Sí |
+| `POST` | `/usuarios/{nick}/pedidos` | Crea un nuevo pedido a partir de los ítems en el carrito. | Sí |
+| `POST` | `/pedidos/{id}/pagar` | Registra el pago simulado de un pedido específico. | Sí |
+| `PUT` | `/pedidos/{id}/estado` | Cambia el estado operativo de un pedido (ej. entregado, cancelado). | Sí |
 
-- **Verificación de la oferta:** en los productos de categoría *Libros*, el comprador puede buscar el título y comprobar autor, año de primera edición y portada, lo que reduce el riesgo de publicaciones engañosas o confusas.
-- **Información externa y objetiva:** los datos provienen de una fuente reconocida y no de lo que escribe el vendedor, de modo que refuerzan la credibilidad de la publicación.
-- **Menos carga para el vendedor:** no necesita redactar ni subir información bibliográfica; el comprador la consulta directamente.
-- **Costo y complejidad bajos:** es gratuita, no requiere clave ni registro y se integra con una sola petición `GET`, lo que la hace adecuada para un prototipo académico.
-- **Funcionamiento independiente:** si el servicio no está disponible, el resto de la plataforma sigue operando y solo se muestra un mensaje de error en el bloque del libro.
+**API de Usuarios y Autenticación (Puerto 8001)**
 
----
+| Método | Endpoint | Descripción | Requiere Sesión |
+| :--- | :--- | :--- | :---: |
+| `GET` | `/` | Verifica que el servicio de autenticación esté activo. | No |
+| `POST` | `/login` | Valida las credenciales (`nick` y `contrasena`) y devuelve los datos de sesión y rol. | No |
+| `POST` | `/registro` | Registra una nueva cuenta de usuario en el sistema. | No |
+| `GET` | `/usuarios/{nick}/perfil` | Obtiene los datos del perfil de un usuario. | Sí |
+
+### Modelo entidad-relación (SQL)
+
+![Modelo Entidad-Relación](image_d698b8.jpg)
+
+Para garantizar la consistencia, la trazabilidad de los pedidos y la gestión de usuarios, se implementó PostgreSQL con el siguiente esquema:
+
+* **`usuarios`**: Almacena credenciales (con hash vía `pgcrypto`), nombre, carrera y rol.
+
+* **`productos` y `categorias`**: El núcleo del catálogo, con referencias (FK) al vendedor.
+
+* **`pedidos`, `detalle_pedido` y `transacciones`**: Gestión de la compra simulada, almacenando precios históricos para asegurar la inmutabilidad de la boleta.
+
+* **`carrito_items` y `favoritos`**: Tablas asociativas que vinculan al usuario con el producto deseado.
+
+### Diseño de la colección (NoSQL)
+
+Se justificó el uso de MongoDB para la colección **`preguntas`** debido a su naturaleza orientada a documentos:
+
+* **Patrón de acceso óptimo:** Cada pregunta se lee y se escribe completa con su respuesta embebida (nested object), evitando operaciones de JOIN costosas que serían requeridas en SQL.
+
+* **Estructura ágil:** Mantiene referencias directas a `producto_id` y `vendedor_id` de PostgreSQL, pero encapsulando el hilo de conversación `texto` -> `respuesta.texto` de manera jerárquica y eficiente en formato BSON JSON-Schema.
 
 ## Diseño de la plataforma
 
 La interfaz usa una barra de navegación superior con logo, buscador y accesos que **cambian según el rol**, diseño responsive con la grilla de Bootstrap y tarjetas de producto con indicador de estado (**Disponible** / **Vendido**). La plataforma maneja tres perfiles:
 
-| Perfil | Cómo se accede |
-|---|---|
-| **Visitante** | Sin iniciar sesión |
-| **Usuario** | Inicio de sesión con rol `usuario` |
-| **Administrador** | Inicio de sesión con rol `admin` |
+| Perfil | Cómo se accede | 
+| ----- | ----- | 
+| **Visitante** | Sin iniciar sesión | 
+| **Usuario** | Inicio de sesión con rol `usuario` | 
+| **Administrador** | Inicio de sesión con rol `admin` | 
 
-### Vista de visitante (sin sesión)
-
-Solo lectura. Puede:
-
-- Ver la portada y las filas de productos *Nuevos* y *Populares por categoría*.
-- Buscar y filtrar en el Mercado.
-- Ver el detalle de cada producto.
-- Ver la información de libros desde Open Library.
-
-No ve el carrito, los favoritos ni la opción **Publicar**. En el detalle de un producto, el botón de compra se transforma en **"Inicia sesión para comprar"** y lo lleva al login.
-
-### Vista de usuario
-
-Además de lo anterior, puede:
-
-- **Iniciar y cerrar sesión** (al cerrar, se limpian carrito, favoritos y publicaciones propias).
-- **Carrito de compra:** agregar productos disponibles, quitar ítems individuales, ver el total y vaciarlo.
-- **Favoritos:** marcar productos con un corazón.
-- **Publicar productos** mediante un formulario con validación, con una **espera de 30 segundos entre publicaciones** para evitar abuso.
-- **Cambiar el estado** de una publicación (Disponible  Vendido) desde el Mercado.
-- Ver el panel **"Tus publicaciones"**.
-
-### Vista de administrador
-
-Incluye todo lo del usuario, y además:
-
-- **Eliminar publicaciones** individuales (con confirmación previa).
-- **Borrar todas** sus publicaciones desde el panel *Tus publicaciones*.
-- **Publicar sin límite de espera** (el administrador no tiene la restricción de 30 segundos).
-
-### Resumen de permisos
-
-| Acción | Visitante | Usuario | Administrador |
-|---|:---:|:---:|:---:|
-| Ver Inicio, Mercado y detalle | Sí | Sí | Sí |
-| Buscar, filtrar y ordenar | Sí | Sí | Sí |
-| Ver información de libros | Sí | Sí | Sí |
-| Carrito | No | Sí | Sí |
-| Favoritos | No | Sí | Sí |
-| Publicar productos | No | Sí (con espera de 30 s) | Sí (sin espera) |
-| Cambiar estado Disponible/Vendido | No | Sí | Sí |
-| Eliminar publicaciones | No | No | Sí |
-| Borrar todas las publicaciones propias | No | No | Sí |
-
----
+*(El detalle completo de vistas está implementado en la aplicación, donde Administradores tienen facultades extendidas de moderación y eliminación sin cooldown de publicación).*
 
 ## Flujo de la plataforma
 
 ```
 Inicio ---> Buscar ---> Ver detalles ---> Ejecutar acción ---> Confirmación ---> Actualización de estado
+
 ```
 
-| Paso | Descripción | Visitante | Usuario | Administrador |
-|---|---|---|---|---|
-| **Inicio** | Carga de la portada y de los productos desde la API (`GET /productos`). | Explora destacados y categorías. | Explora, con sesión iniciada. | Explora, con sesión iniciada. |
-| **Buscar** | Búsqueda por texto, filtros (categoría, estado, precio) y orden. | Encuentra productos. | Encuentra productos. | Localiza publicaciones por estado o categoría. |
-| **Ver detalles** | Pantalla del producto con toda su información y recomendaciones. | Revisa precio, vendedor y datos del libro. | Revisa y decide la compra. | Revisa antes de gestionar. |
-| **Ejecutar acción** | Acción sobre el producto. | Solo puede ir al login. | Agregar al carrito, marcar favorito, publicar o cambiar estado. | Las del usuario, más eliminar. |
-| **Confirmación** | Validación y respuesta del sistema. | Redirección al login. | Mensaje de éxito al publicar; validación del formulario. | Cuadro de confirmación antes de eliminar. |
-| **Actualización de estado** | La interfaz refleja el cambio (`POST`, `PUT`, `DELETE`). | — | Nueva publicación visible; producto vendido sale del carrito. | El producto cambia de estado o desaparece del listado, del carrito y de favoritos. |
-
----
+*(El flujo end-to-end soporta la navegación desde React hasta la persistencia y retorno de datos, con confirmaciones visuales para cada operación asíncrona).*
 
 ## Criterio de coherencia: cambios e incrementos realizados
 
 ### 1. División de vistas de administrador y usuario
 
-- Se incorporó un **sistema de autenticación** con una pantalla de login (`pages/Login.jsx`) y una API de usuarios independiente (`api/usuarios.py`) que valida las credenciales y devuelve el `nick` y el `rol`.
-- La sesión se guarda en `localStorage` y, a partir de ella, `App.jsx` calcula `sesionIniciada` y `esAdmin`, que se propagan a las páginas y componentes.
-- Cada vista muestra solo lo que su rol permite:
-  - `Header`: oculta **Publicar** y el carrito si no hay sesión; alterna entre *Iniciar sesión* y *Cerrar sesión*.
-  - `TarjetaProducto`: muestra favoritos y cambio de estado solo con sesión, y el botón de **eliminar solo al administrador**.
-  - `Producto`: el visitante ve "Inicia sesión para comprar".
-  - `Publicar`: exige sesión (si no la hay, muestra el login); aplica la espera de 30 s solo a no administradores y muestra **Borrar todas** solo al administrador.
+Se incorporó un sistema de autenticación completo, validado localmente o mediante la base de datos en PostgreSQL (según el entorno de ejecución).
 
 ### 2. Implementación de la API mediante FastAPI
 
-Se reemplazó el manejo local de datos por servicios REST con validación mediante Pydantic y CORS habilitado.
-
-**API de productos** (`api/main.py`, puerto 8000)
-
-| Método | Endpoint | Función |
-|---|---|---|
-| `GET` | `/` | Verifica que la API funciona |
-| `GET` | `/productos` | Lista todos los productos |
-| `GET` | `/productos/{id}` | Obtiene un producto (404 si no existe) |
-| `POST` | `/productos` | Crea un producto (201) |
-| `PUT` | `/productos/{id}` | Actualiza un producto (por ejemplo, su estado) |
-| `DELETE` | `/productos/{id}` | Elimina un producto |
-
-**API de usuarios** (`api/usuarios.py`, puerto 8001)
-
-| Método | Endpoint | Función |
-|---|---|---|
-| `GET` | `/` | Verifica que la API funciona |
-| `POST` | `/login` | Valida `nick` y `contrasena`; devuelve `{nick, rol}` o error 401 |
-
-Reglas de validación del modelo `ProductoEntrada` (las mismas que aplica el formulario de React):
-
-| Campo | Regla |
-|---|---|
-| `nombre` | 5 a 80 caracteres |
-| `categoria` | 3 a 30 caracteres |
-| `descripcion` | 20 a 300 caracteres |
-| `vendedor`, `carrera`, `contacto` | 3 a 60 caracteres |
-| `estado` | `disponible` por defecto |
-| `precio` | Entero |
-| `imagen` | Texto (ruta o imagen en base64) |
-
-La documentación interactiva (Swagger) está disponible en `/docs` de cada API.
+Se reemplazó el manejo local por servicios REST con validación estricta mediante modelos Pydantic.
 
 ### 3. Implementación de React y sus funcionalidades
 
-- **Arquitectura por componentes:** 16 componentes reutilizables y 5 páginas.
-- **Manejo de estado con hooks** (`useState`, `useEffect`): productos, carga, errores, página actual, búsqueda, carrito, favoritos, sesión y publicaciones propias.
-- **Consumo de APIs** con `fetch` (GET, POST, PUT, DELETE), con estados de carga y error y opción de reintentar.
-- **Navegación entre vistas** sin recargar la página.
-- **Búsqueda y filtros combinados** por texto, categoría, estado, precio mínimo/máximo y orden.
-- **Carrito de compra** con total, quitar ítems y bloqueo de productos vendidos.
-- **Favoritos** y **recomendaciones** por categoría.
-- **Formulario de publicación** con validación por campo, contador de caracteres y procesamiento de imagen (valida tipo, máximo 5 MB y redimensiona a 800 px).
-- **Persistencia en el navegador** con `localStorage` (`js/almacenamiento.js`): la sesión, el carrito y los favoritos sobreviven a recargar la página.
-- **Integración con Open Library** (`services/openLibrary.js` y `InfoLibro.jsx`): en los productos de categoría *Libros* se puede buscar el título para ver autor, año de primera edición y portada.
-- **Utilidades de formato** centralizadas (`formato.js`): precios en CLP, categorías y estados.
+Manejo de estado robusto con hooks, integración con Open Library, y arquitectura por componentes escalable.
 
----
+## Instalación, ejecución y despliegue con Docker
 
-## Instalación y ejecución
+### Opción 1: Ejecución con Docker Compose (Recomendada - Etapa 4)
 
-### Requisitos previos
+Para reproducir la infraestructura real, incluyendo PostgreSQL y MongoDB, el proyecto está completamente dockerizado.
+**Requisitos:** Tener Docker Desktop instalado y corriendo.
 
-| Herramienta | Versión recomendada |
-|---|---|
-| [Node.js](https://nodejs.org) (incluye npm) | LTS reciente (20.19 o superior) |
-| [Python](https://www.python.org) | 3.9 o superior (el proyecto se probó con 3.13) |
+1. Clona el repositorio y sitúate en la raíz del proyecto.
 
-Verifica las versiones instaladas:
+2. Copia el archivo de variables de entorno:
 
-```bash
-node -v
-npm -v
-python --version
-```
+   ```
+   cp .env.example .env
+   
+   ```
 
-El proyecto necesita **tres procesos** en ejecución a la vez: la API de productos, la API de usuarios y el frontend. Usa una terminal para cada uno.
+3. Levanta los contenedores en segundo plano:
 
-### Paso 1 — Backend (FastAPI)
+   ```
+   docker compose up -d --build
+   
+   ```
 
-Desde la carpeta raíz del proyecto:
+*Nota: Los scripts `sql/01_esquema.sql`, `sql/02_datos_prueba.sql` y `mongo/01_preguntas.js` se ejecutarán automáticamente al crear los volúmenes, dejando el sistema listo para usar.*
 
-```bash
-cd api
+**Accesos del entorno Docker:**
 
-# (Opcional pero recomendado) crear un entorno virtual
-python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# macOS / Linux:
-source .venv/bin/activate
+* Frontend React: `http://127.0.0.1:5173`
 
-# Instalar dependencias
-pip install fastapi "uvicorn[standard]"
-```
+* Backend API: `http://127.0.0.1:8000`
 
-**Terminal 1** — API de productos (puerto 8000):
+* PostgreSQL: Puerto `5432`
 
-```bash
-uvicorn main:app --reload --port 8000
-```
+* MongoDB: Puerto `27018`
 
-**Terminal 2** — API de usuarios (puerto 8001):
+### Opción 2: Ejecución Manual en Memoria (Prototipo Básico)
 
-```bash
-uvicorn usuarios:app --reload --port 8001
-```
+*(Instrucciones previas de desarrollo sin bases de datos)*
+Si prefieres correrlo sin Docker usando los JSON de prueba:
 
-> **Importante:** Ejecuta los comandos **dentro de la carpeta `api/`**: las APIs abren `data.json` y `usuarios.json` con rutas relativas y fallarán si se inician desde otra carpeta.
+1. Terminal 1 (API Productos): `cd api` -> `uvicorn main:app --reload --port 8000`
 
-Comprueba que funcionan abriendo `http://127.0.0.1:8000/docs` y `http://127.0.0.1:8001/docs`.
+2. Terminal 2 (API Usuarios): `cd api` -> `uvicorn usuarios:app --reload --port 8001`
 
-### Paso 2 — Frontend (React + Vite)
-
-> **Nota:** El respaldo del proyecto **no incluye `package.json`** (el archivo que declara las dependencias y los comandos de npm), por lo que hay que crearlo antes de instalar. Las dependencias que realmente usa el código son solo **React y React DOM**; Bootstrap se carga por CDN desde `index.html`, y Vite es la herramienta que compila y sirve la aplicación.
-
-**3.1.** En la **raíz del proyecto** (donde está `index.html`), crea el archivo `package.json`:
-
-```json
-{
-  "name": "infraganti-marketplace",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  }
-}
-```
-
-> Alternativa rápida: ejecutar `npm init -y` y luego agregar manualmente `"type": "module"` y la sección `"scripts"` anteriores.
-
-**3.2.** Crea el archivo `vite.config.js` en la misma carpeta:
-
-```js
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-
-export default defineConfig({
-  plugins: [react()],
-});
-```
-
-**3.3.** Instala las dependencias:
-
-```bash
-npm install react react-dom
-npm install -D vite @vitejs/plugin-react
-```
-
-**3.4.** Inicia el servidor de desarrollo (**Terminal 3**):
-
-```bash
-npm run dev
-```
-
-Abre en el navegador la dirección que indica Vite (normalmente `http://localhost:5173`).
-
-### Otra opción: partir de una plantilla de Vite
-
-Si prefieres no crear los archivos a mano:
-
-```bash
-npm create vite@latest infraganti-front -- --template react
-cd infraganti-front
-npm install
-```
-
-Luego copia dentro de esa carpeta las carpetas `src/` y `public/` y el archivo `index.html` del proyecto, reemplazando los que genera la plantilla (borra su `App.css` y `index.css`, que no se usan), y ejecuta `npm run dev`.
-
-### Orden recomendado y direcciones
-
-| Servicio | Comando | Dirección |
-|---|---|---|
-| API de productos | `uvicorn main:app --reload --port 8000` | `http://127.0.0.1:8000` |
-| API de usuarios | `uvicorn usuarios:app --reload --port 8001` | `http://127.0.0.1:8001` |
-| Frontend | `npm run dev` | `http://localhost:5173` |
-
-El frontend apunta a las APIs mediante constantes en `src/App.jsx` (`URL_API` y `URL_USUARIOS`). Si cambias los puertos o el equipo donde corren, actualiza esos valores.
-
-### Compilar para producción
-
-```bash
-npm run build      # genera la carpeta dist/
-npm run preview    # prueba localmente la versión compilada
-```
-
----
+3. Terminal 3 (React Frontend): En la raíz -> `npm install` -> `npm run dev`
 
 ## Persistencia de datos
 
-Es importante conocer **dónde se guarda cada dato**, ya que en esta versión del proyecto la información **no se almacena en una base de datos**.
+El proyecto contempla dos modalidades de persistencia, evolucionando desde la etapa inicial a la final:
 
-| Dato | Dónde vive | ¿Sobrevive a reiniciar la API? | ¿Sobrevive a recargar la página? |
-|---|---|:---:|:---:|
-| Productos (incluidos los publicados, editados o eliminados) | Memoria de la API de productos, cargados desde `data.json` al iniciar | No | Sí (mientras la API siga encendida) |
-| Cuentas de usuario | `usuarios.json` (solo lectura) | Sí | Sí |
-| Sesión iniciada | `localStorage` del navegador | — | Sí |
-| Carrito, favoritos, ids de publicaciones propias y hora de la última publicación | `localStorage` del navegador | — | Sí |
+1. **Persistencia mediante Bases de Datos (Entorno Docker):**
 
-**Qué significa en la práctica:**
+   * Todos los cambios de **Productos, Usuarios y Pedidos** se insertan y mantienen de manera inmutable en **PostgreSQL**, sobreviviendo a reinicios del servidor gracias a los volúmenes configurados (`postgres_infraganti`).
 
-- Los cambios en productos (publicar, cambiar estado, eliminar) **se pierden al detener o reiniciar la API**, y `data.json` **no se modifica**. Al volver a iniciar, se restablecen los 9 productos originales.
-- Usar `--reload` también reinicia la API cada vez que se guarda un archivo `.py`, restaurando los datos originales.
-- El carrito, los favoritos y la sesión pertenecen **a cada navegador**: no se comparten entre equipos ni entre usuarios. Si la API se reinicia, pueden quedar en el carrito o en favoritos productos que ya no existen.
+   * Las interacciones de **Preguntas** se mantienen en **MongoDB** (`mongo_infraganti`).
 
----
+2. **Persistencia en Memoria y LocalStorage (Entorno Manual):**
+
+   * Si se ejecuta el proyecto sin Docker, los datos se apoyan en `data.json` y se restablecen al reiniciar uvicorn. El carrito, favoritos y sesión se guardan en el `localStorage` del navegador.
+
+## Pruebas
+
+Se implementaron pruebas funcionales automatizadas que validan reglas de negocio, manejo de errores y cobertura de flujos relevantes de la API integrada.
+
+**Cómo ejecutarla:** (Con la infraestructura Docker encendida)
+
+```
+npm run test:smoke
+
+```
+
+**Qué comprueba:**
+
+* **Usuarios:** Registro, login, bloqueos por nick repetido (409) o contraseña inválida (401).
+
+* **Productos (PostgreSQL):** CRUD, reglas de edición/eliminación solo para admin o dueño (403), validación de precio y catálogo.
+
+* **Carritos/Pedidos:** Simulaciones de pago, bloqueos para comprar el propio producto, protección de pedidos ajenos y estados de cancelación.
+
+* **Preguntas (MongoDB):** Creación de documentos embebidos, validación de respuestas dobles (409) y controles de propiedad de artículo.
 
 ## Limitaciones conocidas
 
-**Datos y funcionamiento**
+* Al ejecutar la versión manual (sin Docker), la persistencia depende de JSONs efímeros en memoria y los IDs pueden solaparse.
 
-- Los productos viven en memoria: se pierden al reiniciar la API (ver [Persistencia de datos](#persistencia-de-datos)).
-- Los **ids de producto nuevos se calculan como `cantidad de productos + 1`**, por lo que tras eliminar publicaciones podrían repetirse ids existentes.
-- Las imágenes de productos publicados se envían a la API como texto base64 dentro del JSON, por lo que ocupan memoria y no se guardan como archivos.
-- Cada publicación no queda asociada a una cuenta de autor: el vendedor se escribe en el formulario.
+* Las imágenes de productos se almacenan actualmente en base64 en lugar de utilizar un bucket S3 o servidor estático especializado.
 
-**Seguridad**
-
-- Las **contraseñas están en texto plano** en `usuarios.json` y las APIs **no usan tokens**.
-- Los permisos (por ejemplo, que solo el administrador elimine) se aplican en la interfaz de React, no en los endpoints. Cualquier cliente que llame directamente a la API puede ejecutar esas operaciones.
-- CORS está abierto a cualquier origen (`allow_origins=["*"]`), adecuado para desarrollo pero no para producción.
-- No hay verificación de la identidad real de los usuarios ni registro de nuevas cuentas, por lo que la confianza entre las partes depende todavía de las medidas básicas del prototipo (sesión, moderación y límite de publicación).
-- No existe un sistema de pagos ni de reputación o calificación de vendedores.
-
-**API pública (Open Library)**
-
-- Requiere conexión a internet y depende de la disponibilidad del servicio externo.
-- La búsqueda es por título y devuelve como máximo 3 resultados, por lo que no siempre coincide con la edición exacta que se vende.
-- Algunos libros no tienen portada, autor o año de publicación (la interfaz muestra "Sin dato" o "Sin portada").
-- Solo se aplica a productos de la categoría *Libros*.
-
-**Otras**
-
-- El cambio de estado Disponible/Vendido puede hacerlo cualquier usuario con sesión, no solo el dueño de la publicación.
-- No se incluyen pruebas automatizadas.
-- El respaldo no incluye `package.json` ni `vite.config.js`; deben crearse según las instrucciones de instalación.
-
-Estas decisiones son aceptables para un prototipo académico; ver [Mejoras futuras](#mejoras-futuras) para el camino hacia producción.
-
----
+* La identidad real del usuario no es comprobada externamente, y los pagos son transacciones simuladas por requerimientos académicos.
 
 ## Uso de Inteligencia Artificial
 
-Durante el desarrollo del proyecto el equipo utilizó herramientas de inteligencia artificial como apoyo, sin reemplazar el trabajo ni las decisiones de los integrantes:
+Durante el desarrollo del proyecto el equipo utilizó herramientas de inteligencia artificial asegurando transparencia, comprensión y validación posterior de las respuestas generadas:
 
-| Herramienta | Desarrollador | Apoyo recibido |
-|---|---|---|
-| **Claude** | Anthropic | Programación, resolución de problemas y documentación |
-| **Gemini** | Google | Programación, resolución de problemas y documentación |
+| Herramienta | Apoyo recibido | Prompts utilizados (Ejemplos) / Validación | 
+| ----- | ----- | ----- | 
+| **Claude** | Programación, documentación y revisión de código en FastAPI | *"Actúa como desarrollador FastAPI. Necesito un modelo Pydantic para validar un formulario de creación de productos que valide largos de strings."* -> Se verificó e integró la clase validada. | 
+| **Gemini** | Resolución de problemas, Docker Compose y PostgreSQL | *"Tengo un error de conexión entre FastAPI y el contenedor postgres en docker-compose, ¿cuál es la string de conexión correcta usando el nombre del servicio?"* -> Se ajustó el valor de `DATABASE_URL` logrando conexión exitosa. | 
 
-- **Programación:** apoyo en la escritura y revisión de código en React y FastAPI, y en la implementación de componentes, validaciones y consumo de APIs.
-- **Resolución de problemas:** ayuda para identificar y corregir errores, entender mensajes de la consola y evaluar alternativas de solución.
-- **Documentación:** apoyo en la redacción de este README y en la explicación de la estructura, los flujos y las instrucciones de instalación.
-
-El equipo revisó, probó y adaptó los resultados obtenidos y es responsable del contenido final del proyecto.
-
----
+El equipo comprendió, revisó, probó y adaptó manualmente los resultados generados, siendo responsable del código final del proyecto.
 
 ## Cuentas de prueba
 
-| Rol | Nick | Contraseña |
-|---|---|---|
-| Usuario | `usuario` | `usuario123` |
-| Administrador | `admin` | `admin123` |
+| Rol | Nick | Contraseña | 
+| ----- | ----- | ----- | 
+| Usuario | `usuario` | `usuario123` | 
+| Administrador | `admin` | `admin123` | 
 
-Las cuentas están definidas en `api/usuarios.json`; para agregar más, añade un objeto con `nick`, `contrasena` y `rol` (`usuario` o `admin`) y reinicia la API de usuarios.
-
----
+*(Si usas el entorno Docker, existen vendedores adicionales creados en `02_datos_prueba.sql` todos con contraseña `vendedor123`)*
 
 ## Solución de problemas
 
-| Problema | Causa probable | Solución |
-|---|---|---|
-| "No fue posible cargar los productos. Revisa que la API esté encendida." | La API de productos no está corriendo | Inicia `uvicorn main:app --port 8000` dentro de `api/` |
-| "No fue posible conectar con la API" al iniciar sesión | La API de usuarios no está corriendo | Inicia `uvicorn usuarios:app --port 8001` dentro de `api/` |
-| `FileNotFoundError: data.json` | Se inició uvicorn desde otra carpeta | Ejecuta el comando dentro de `api/` |
-| `npm run dev` dice que falta el script o el `package.json` | No se creó el `package.json` | Sigue el paso 2 de la instalación |
-| `Cannot find module 'vite'` o `@vitejs/plugin-react` | Dependencias sin instalar | Ejecuta `npm install -D vite @vitejs/plugin-react` |
-| `Address already in use` | El puerto está ocupado | Cierra el otro proceso o usa otro puerto y actualiza `src/App.jsx` |
-| Los productos publicados desaparecieron | La API se reinició (datos en memoria) | Comportamiento esperado; ver [Persistencia](#persistencia-de-datos) |
-| Quedó una sesión "pegada" o datos viejos en carrito | Información guardada en `localStorage` | Cierra sesión, o limpia los datos del sitio desde las herramientas del navegador |
-| No cargan las portadas de libros | Sin internet o Open Library no disponible | Verifica la conexión e intenta de nuevo |
+* **"Address already in use":** Cierra los procesos locales u otros contenedores Docker ocupando los puertos 5432, 27018, 8000 o 5173.
 
----
+* **Base de datos vacía al entrar:** Revisa si `docker-entrypoint-initdb.d/` ejecutó correctamente los archivos SQL/JS al hacer el build.
+
+* **Fallo al levantar Docker:** Verifica que generaste el archivo `.env` a partir del `.env.example`.
 
 ## Mejoras futuras
 
-- Reemplazar los archivos JSON por una **base de datos** (por ejemplo SQLite con SQLAlchemy, o PostgreSQL) para que los datos persistan.
-- **Cifrar contraseñas** (por ejemplo con bcrypt) y autenticar con **tokens JWT**.
-- Proteger los endpoints por rol en el backend (`DELETE` solo para administradores).
-- Generar ids únicos y autoincrementales desde la base de datos.
-- Registro de nuevos usuarios y vinculación de cada publicación con su autor.
-- Restringir CORS a los orígenes del frontend y usar variables de entorno para las URLs de las APIs.
-- Subida de imágenes como archivos en lugar de base64.
-- Pruebas automatizadas y un archivo `requirements.txt` para el backend.
+* Cifrar comunicaciones con certificados SSL/HTTPS.
 
----
+* Implementar JWT (JSON Web Tokens) en lugar de validaciones simples de autenticación en la cabecera.
+
+* Subida de imágenes multipart directamente hacia servicios cloud.
+
+* Reemplazar las credenciales estáticas de bases de datos por un manejador de secretos de producción.
 
 **INFRAGANTI MARKETPLACE** — Benjamin Farias, Benjamin Villarroel, Omar Millar y Frank Häfelin.
